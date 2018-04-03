@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Discord Online Voice Statistic</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script async src="lib/clusterize.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="styles/bundle.css" rel="stylesheet">
+    <link href="styles/loader.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
+    <link href="styles/clusterize.css" rel="stylesheet">
+    <link href="styles/chatwidget.css" rel="stylesheet">
+    <style>
+        tr th.orderBy {
+            cursor: pointer
+        }
+
+        a.w3-button.disabled {
+            color: #a9a9a9
+        }
+
+        a.w3-button.disabled:hover {
+            color: #a9a9a9 !important;
+            background-color: transparent !important;
+            opacity: 1 !important;
+            cursor: default
+        }
+    </style>
+    <script async>
+        $(document).ready(function () {
+            $modal = $('.modal-frame');
+            $overlay = $('.modal-overlay');
+
+            $modal.bind('webkitAnimationEnd oanimationend msAnimationEnd animationend', function (e) {
+                if ($modal.hasClass('state-leave')) {
+                    $modal.removeClass('state-leave');
+                }
+            });
+
+            $('.close').on('click', function () {
+                $overlay.removeClass('state-show');
+                $modal.removeClass('state-appear').addClass('state-leave');
+            });
+
+            $('.open').on('click', function () {
+                $overlay.addClass('state-show');
+                $modal.removeClass('state-leave').addClass('state-appear');
+            });
+        });
+    </script>
+</head>
+
+<body class="light">
+    <div class="tabs">
+        <div class="w3-container">
+            <h1>Статистика участников OZZY</h1>
+            <h3>Всего участников:
+                <span class="w3-tag w3-large theme-d1" id="members_count"></span>
+            </h3>
+            <h3>Сейчас в голосовых каналах онлайн:
+                <span class="w3-tag w3-large theme-d1" id="voicecurrentonline_count"></span>
+            </h3>
+            <h3>Всего в голосовых каналах было онлайн:
+                <span class="w3-tag w3-large theme-d1" id="voicemaxonline_count"></span>
+            </h3>
+            <div class="w3-bar theme-l2 w3-card-4" style="width:120px;display:inline-block">
+                <button onclick="document.getElementById('id01').style.display='block'" class="w3-bar-item w3-button w3-mobile theme-d1"
+                    style="width:120px;">
+                    СБРОСИТЬ
+                </button>
+            </div>
+            <div id="id01" class="w3-modal" style="height:100%;">
+                <div class="w3-modal-content w3-animate-zoom" style="width:400px">
+                    <div class="w3-container" style="text-align: center;">
+                        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                        <p style="display: inline-block;">Введите пароль для сброса базы</p>
+                        <br />
+                        <input id="password" type="password" name="psw" style="text-align:center;display: inline-block;" required maxlength="16"
+                        />
+                        <br />
+                        <button onclick="ClearTable()" class="w3-bar-item w3-button w3-mobile theme-d1" style="margin-top:14px;margin-bottom:14px;display: inline-block;">ПОДТВЕРДИТЬ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-card-4 w3-responsive">
+                <table id="headersArea" class="w3-table-all border-theme" style="overflow: hidden;">
+                    <thead>
+                        <tr class="theme-d1">
+                            <th title="Sort by Num" style='width:6%'>#</th>
+                            <th title="Sort by User ID" style='width:15%'>ID пользователя</th>
+                            <th title="Sort by Username" style='width:35%'>Имя пользователя</th>
+                            <th title="Sort by Total Voice Time" style='width:17%'>Общий голос. онлайн</th>
+                            <th title="Sort by Last Session Time" style='width:17%'>Длит. последней сессии</th>
+                            <th title="Sort by In Voice Channel" style='width:10%'>В войс канале?</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div id="scrollArea" style="max-height:494px; overflow-y: auto;overflow-x: hidden;">
+                    <table id="statisticTable" class="w3-table-all border-theme">
+                        <tbody id="contentArea" class="clusterize-content"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="loader" class="spinner">
+                <div class="dot1"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+    </div>
+    <script src="lib/requesthandler.js?v=3"></script>
+    <script src="lib/discordtools.js?v=1"></script>
+</body>
+
+</html>
